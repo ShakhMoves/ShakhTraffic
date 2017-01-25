@@ -88,5 +88,6 @@ if __name__ == '__main__':
         NET.addController(rc)
     NET.build()
     NET.start()
+    NET.iperf(hosts=[host1, host2], udpBw='1M', l4Type='UDP')
     CLI(NET)
     NET.stop()
