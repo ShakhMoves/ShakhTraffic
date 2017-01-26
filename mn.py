@@ -25,6 +25,7 @@ from mininet.log import setLogLevel
 from mininet.node import RemoteController
 from mininet.node import OVSSwitch
 from mininet.topo import Topo
+from mininet.topolib import TreeTopo
 
 class SampleTopology(Topo):
     """
@@ -69,16 +70,19 @@ if __name__ == '__main__':
 
     setLogLevel('info')
 
-    SWITCH = partial(OVSSwitch, protocols='OpenFlow13')
-    ports = [6633, 6634]
+    SWITCH = partial(OVSSwitch, protocols='OpenFlow10')
+    ports = [6633]
 
     RCS = []
     for port in ports:
-        RCS.append(RemoteController('ONOS-%s' % port, ip='127.0.0.1', port=port))
-    NET = Mininet(topo=SampleTopology(), switch=SWITCH, build=False)
+        RCS.append(RemoteController('ONOS-%s' % port, ip='192.168.128.179', port=port))
+    NET = Mininet(topo=TreeTopo(4, 2), switch=SWITCH, build=False)
     for rc in RCS:
         NET.addController(rc)
     NET.build()
     NET.start()
+    h1, h2 = NET.get('h1', 'h2')
+    h1.sendCmd('ping -i 0.01 -c 100 10.0.0.3')
+    h2.sendCmd('ping -i 0.01 -c 100 10.0.0.4')
     CLI(NET)
     NET.stop()
