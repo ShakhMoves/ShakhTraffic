@@ -1,11 +1,3 @@
-# In The Name Of God
-# ========================================
-# [] File Name : mn.py
-#
-# [] Creation Date : 14-11-2016
-#
-# [] Created By : Parham Alvani (parham.alvani@gmail.com)
-# =======================================
 #!/usr/bin/env python
 # In The Name Of God
 # ========================================
@@ -88,6 +80,5 @@ if __name__ == '__main__':
         NET.addController(rc)
     NET.build()
     NET.start()
-    NET.iperf(hosts=[host1, host2], udpBw='1M', l4Type='UDP')
     CLI(NET)
     NET.stop()
