@@ -30,6 +30,8 @@ from mininet.topolib import TreeTopo
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--depth', dest='depth', default=4, type=int,
+                        help='TreeTopo depth')
     parser.add_argument('ips', metavar='ip',
                         help='ONOS Network Controllers IP Addresses',
                         default=['127.0.0.1'], type=str, nargs='*')
@@ -42,13 +44,14 @@ if __name__ == '__main__':
     rcs = []
     for ip in cli_args.ips:
         rcs.append(RemoteController('ONOS-%s' % ip, ip=ip, port=6633))
-    net = Mininet(topo=TreeTopo(4, 2), switch=switch, build=False)
+    net = Mininet(topo=TreeTopo(cli_args.depth, 2),
+                  switch=switch, build=False)
     for rc in rcs:
         net.addController(rc)
     net.build()
     net.start()
     # h1, h2 = net.get('h1', 'h2')
-    # h1.sendCmd('ping -i 0.01 -c 100 10.0.0.3')
-    # h2.sendCmd('ping -i 0.01 -c 100 10.0.0.4')
+    # h1.sendCmd('ping -i 0.002 -c 500 10.0.0.3')
+    # h2.sendCmd('ping -i 0.002 -c 500 10.0.0.4')
     CLI(net)
     net.stop()
