@@ -32,6 +32,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--depth', dest='depth', default=4, type=int,
                         help='TreeTopo depth')
+    parser.add_argument('-b', '--bandwidth', dest='bandwidth', default='10M',
+                        type=str, help='Test bandwidth')
     parser.add_argument('ips', metavar='ip',
                         help='ONOS Network Controllers IP Addresses',
                         default=['127.0.0.1'], type=str, nargs='*')
@@ -50,8 +52,6 @@ if __name__ == '__main__':
         net.addController(rc)
     net.build()
     net.start()
-    # h1, h2 = net.get('h1', 'h2')
-    # h1.sendCmd('ping -i 0.002 -c 500 10.0.0.3')
-    # h2.sendCmd('ping -i 0.002 -c 500 10.0.0.4')
+    net.iperf(l4Type='UDP', udpBw=cli_args.bandwidth, seconds=1)
     CLI(net)
     net.stop()
