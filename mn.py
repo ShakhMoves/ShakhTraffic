@@ -52,7 +52,6 @@ if __name__ == '__main__':
         net.addController(rc)
     net.build()
     net.start()
-    # net.iperf(l4Type='UDP', udpBw=cli_args.bandwidth, seconds=1)
-    net.pingFull(timeout='1s')
+    net.iperf(l4Type='UDP', udpBw=cli_args.bandwidth)
     CLI(net)
     net.stop()
