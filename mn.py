@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     setLogLevel('info')
 
-    switch = partial(OVSSwitch, protocols='OpenFlow10')
+    switch = partial(OVSSwitch, protocols='OpenFlow13')
 
     rcs = []
     for ip in cli_args.ips:
@@ -52,6 +52,7 @@ if __name__ == '__main__':
         net.addController(rc)
     net.build()
     net.start()
-    net.iperf(l4Type='UDP', udpBw=cli_args.bandwidth, seconds=1)
+    # net.iperf(l4Type='UDP', udpBw=cli_args.bandwidth, seconds=1)
+    net.pingFull(timeout='1s')
     CLI(net)
     net.stop()
