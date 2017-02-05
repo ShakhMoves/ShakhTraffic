@@ -32,7 +32,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--depth', dest='depth', default=4, type=int,
                         help='TreeTopo depth')
-    parser.add_argument('-b', '--bandwidth', dest='bandwidth', default='10M',
+    parser.add_argument('-b', '--bandwidth', dest='bandwidth', default='10',
                         type=str, help='Test bandwidth')
     parser.add_argument('ips', metavar='ip',
                         help='ONOS Network Controllers IP Addresses',
@@ -52,6 +52,10 @@ if __name__ == '__main__':
         net.addController(rc)
     net.build()
     net.start()
-    net.iperf(l4Type='UDP', udpBw=cli_args.bandwidth)
+    b = int(cli_args.bandwidth)
+    for i in range(b):
+        net.hosts[i].sendCmd('ping -c100 -i 0.01 %s' % net.hosts[i + 1].IP())
+    for i in range(b):
+        print(net.hosts[i].waitOutput())
     CLI(net)
     net.stop()
